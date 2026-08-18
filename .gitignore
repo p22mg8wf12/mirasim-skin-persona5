@@ -1,0 +1,14 @@
+# runtime / machine-local — never commit
+mirasim-skin-mona.json
+*.persona5.bak
+*.log
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# nothing sensitive should ever land here; keep it that way
+*.env
+*relay*.json
+*secret*
+*token*

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<style>
+  :root{--red:#ec0a2e;--hot:#ff2442;--ink:#0a0508;--white:#fbf7f4;--yellow:#ffd23f;--edge:#ffffff22;--mono:"SF Mono",Menlo,monospace}
+  *{margin:0;box-sizing:border-box}
+  html,body{width:1600px;height:760px;overflow:hidden}
+  body{background:#08040a;color:var(--white);font:13px/1.5 -apple-system,"PingFang SC",sans-serif;position:relative;-webkit-font-smoothing:antialiased}
+  .dots{position:absolute;inset:0;opacity:.05;background-image:radial-gradient(#fff 1px,transparent 1.4px);background-size:8px 8px}
+  svg.sh{position:absolute;inset:0;opacity:.5}
+  .cols{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px;padding:64px 48px 40px}
+  .cap{position:absolute;top:18px;left:48px;display:inline-flex;background:var(--red);color:#fff;padding:4px 14px;
+    font:900 14px/1 "Arial Black",Impact;letter-spacing:.2em;transform:skewX(-8deg);box-shadow:3px 3px 0 #000c}
+  .col{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .lab{background:var(--white);color:var(--ink);padding:4px 14px;font:900 14px/1 "PingFang SC";
+    transform:skewX(-7deg);box-shadow:2px 2px 0 var(--red),4px 4px 0 #000c}
+  .desc{font:600 11.5px/1.6 "PingFang SC";color:#c9b6bd;text-align:center;max-width:330px}
+
+  /* menu column */
+  .menu{width:200px;display:flex;flex-direction:column;gap:6px;padding:9px;background:#0c0a0f;border:2px solid var(--white);
+    box-shadow:5px 5px 0 var(--red),8px 8px 0 #000c;transform:skewX(-2deg)}
+  .mi{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--white);color:var(--ink);
+    font:800 13px/1 "PingFang SC";transform:skewX(-3deg);box-shadow:2px 2px 0 #000a}
+  .mi.hot{background:var(--red);color:#fff;translate:3px 0}
+  .mona-menu{position:relative}
+  .mona-menu img{position:absolute;left:-104px;bottom:-10px;height:110px;filter:drop-shadow(2px 3px 0 #000b)}
+
+  /* settings column */
+  .set{width:320px;background:#0c0a0f;border:2px solid var(--white);box-shadow:5px 5px 0 var(--red),8px 8px 0 #000c;
+    transform:skewX(-1.2deg);padding:12px;display:flex;flex-direction:column;gap:9px}
+  .st{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#17141b;padding:9px 11px;
+    border-left:3px solid var(--red);font:700 12.5px/1.35 "PingFang SC";transform:skewX(-2deg)}
+  .st span{display:flex;flex-direction:column;gap:2px}
+  .st span i{font-style:normal;font-size:9.5px;color:#b7a9b3;font-weight:500}
+  .tg{width:36px;height:20px;background:#2a2430;box-shadow:inset 0 0 0 1px #ffffff30;position:relative;flex:none}
+  .tg::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;background:var(--white)}
+  .tg.on{background:var(--red)}.tg.on::after{left:19px}
+  .sel{background:#2a2430;color:#fff;border:1px solid #ffffff33;font:600 11px "PingFang SC";padding:4px 7px}
+  .stat{background:#17141b;padding:9px 11px;border-left:3px solid var(--red);transform:skewX(-2deg)}
+  .stat b{font:900 12px "PingFang SC";display:block;margin-bottom:5px}
+  .stat .g{display:grid;grid-template-columns:auto auto;gap:2px 14px;font:600 11px var(--mono);color:#c9b6bd}
+  .stat .g b{display:inline;color:var(--yellow);font:900 11px var(--mono)}
+  .clr{background:var(--white);color:var(--ink);border:0;font:800 12.5px "PingFang SC";padding:9px;
+    transform:skewX(-2deg);box-shadow:2px 2px 0 var(--red),4px 4px 0 #000c}
+
+  /* broadcast column */
+  .stagepet{position:relative;width:330px;height:330px}
+  .stagepet img{position:absolute;height:150px;filter:drop-shadow(2px 3px 0 #000b)}
+  .say{position:absolute;background:var(--white);color:var(--ink);padding:7px 11px;font:700 12px/1.5 "PingFang SC";
+    transform:skewX(-4deg) rotate(-2deg);box-shadow:3px 3px 0 var(--red),5px 5px 0 #000c;max-width:230px}
+  .say::after{content:"";position:absolute;bottom:-7px;left:36%;border:7px solid transparent;border-top-color:var(--white);border-bottom:0}
+  .badge{position:absolute;background:var(--red);color:#fff;font:900 12px/1.3 "Arial Black",Impact;padding:2px 6px;
+    transform:skewX(-8deg) rotate(-4deg);box-shadow:2px 2px 0 #000c,inset 0 0 0 1.5px #fff}
+</style></head>
+<body>
+  <div class="dots"></div>
+  <svg class="sh" viewBox="0 0 1600 760" preserveAspectRatio="none">
+    <path d="M0 0 L210 0 L100 100 L170 160 L0 205 Z" fill="#ec0a2e" opacity=".9"/>
+    <path d="M1600 760 L1600 570 L1470 660 L1530 705 L1380 760 Z" fill="#a30722"/>
+    <path d="M1600 0 L1600 170 L1480 90 L1545 45 Z" fill="#ec0a2e" opacity=".75"/></svg>
+  <span class="cap">★ MONA · FEATURES</span>
+
+  <div class="cols">
+    <div class="col">
+      <span class="lab">右键 · 功能菜单</span>
+      <div class="mona-menu">
+        <img src="../skin/assets/mona-sit.png">
+        <div class="menu">
+          <div class="mi">💬 找我聊天</div>
+          <div class="mi hot">⏱ 番茄专注</div>
+          <div class="mi">🎴 今日运势</div>
+          <div class="mi">📊 战况速报</div>
+          <div class="mi">🎭 SHOWTIME</div>
+          <div class="mi">🌗 换个皮肤</div>
+          <div class="mi">🙈 藏起来</div>
+        </div>
+      </div>
+      <p class="desc">右键 / 长按 Mona 唤出。番茄专注会在她头顶挂 25 分钟倒计时，结束自动 SHOWTIME 庆祝。</p>
+    </div>
+
+    <div class="col">
+      <span class="lab">⚙ 设置抽屉</span>
+      <div class="set">
+        <div class="st"><span>任务播报<i>完成 / 翻车 / 待批准</i></span><span class="tg on"></span></div>
+        <div class="st"><span>人格设定<i>自定义说话方式（AIRP）</i></span><span class="sel">高冷精英黑客猫…</span></div>
+        <div class="stat"><b>当前状况</b>
+          <div class="g"><span>会话在跑</span><b>2</b><span>5h 额度</span><b>37%</b><span>对话</span><b>本地大脑</b><span>待办</span><b>3 条</b></div>
+        </div>
+        <button class="clr">清空聊天记录</button>
+      </div>
+      <p class="desc">全部本地存储：待办、人格、位置、聊天记录都在你机器里，一键清空。</p>
+    </div>
+
+    <div class="col">
+      <span class="lab">自动播报 · 三种时刻</span>
+      <div class="stagepet">
+        <img src="../skin/assets/mona-jump.png" style="left:10px;top:44px">
+        <span class="say" style="left:0;top:-12px">任务完成——干得漂亮，头儿。</span>
+        <img src="../skin/assets/mona-sleep.png" style="right:8px;top:96px;height:110px">
+        <span class="say" style="right:-6px;top:34px;box-shadow:3px 3px 0 #6d7bff,5px 5px 0 #000c">Zzz…（挂机 75 秒自动睡）</span>
+        <img src="../skin/assets/mona-walk.png" style="left:76px;bottom:-6px;height:130px">
+        <span class="say" style="left:34px;bottom:128px;box-shadow:3px 3px 0 #ffd23f,5px 5px 0 #000c">「爬虫修复」在等你拍板，快去点一下。</span>
+        <span class="badge" style="right:34px;bottom:44px">24:59</span>
+      </div>
+      <p class="desc">会话跑完 → 欢呼；翻车 / 等批准 → 炸毛提醒；额度过 85% → 钱包警报。不用你盯屏。</p>
+    </div>
+  </div>
+</body></html>

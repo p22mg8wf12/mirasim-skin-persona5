@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>mirasim-skin-persona5</title>
+<style>
+  :root{--red:#ec0a2e;--red-hot:#ff2442;--deep:#a30722;--ink:#0a0508;--white:#fbf7f4;--yellow:#ffd23f}
+  *{margin:0;box-sizing:border-box}
+  html,body{width:1400px;height:1000px;overflow:hidden}
+  body{position:relative;background:#08040a;color:var(--white);
+    font-family:-apple-system,"PingFang SC",sans-serif;-webkit-font-smoothing:antialiased}
+  .bg{position:absolute;inset:0;background:url("skin/assets/keyart.png") right center/cover no-repeat;
+    opacity:.32;-webkit-mask-image:linear-gradient(90deg,transparent 3%,#000 58%)}
+  .dots{position:absolute;inset:0;opacity:.05;background-image:radial-gradient(#fff 1px,transparent 1.4px);background-size:8px 8px}
+  .frame{position:absolute;inset:22px;border:2px solid var(--white);opacity:.45}
+  svg.shards{position:absolute;inset:0;opacity:.55}
+  .wrap{position:absolute;inset:0;padding:56px 62px;display:flex;flex-direction:column}
+  .kick{display:inline-flex;align-self:flex-start;gap:8px;align-items:center;background:var(--red);color:#fff;
+    padding:5px 15px;font:900 15px/1 "Arial Black",Impact,sans-serif;letter-spacing:.2em;
+    transform:skewX(-8deg);box-shadow:4px 4px 0 #000c}
+  h1{margin:14px 0 2px;font:900 104px/.85 "Arial Black",Impact,sans-serif;letter-spacing:-.01em;
+    text-shadow:6px 6px 0 var(--red),10px 10px 0 #0008;transform:skewX(-4deg)}
+  .sub{font:800 20px/1 "PingFang SC";letter-spacing:.14em;color:var(--yellow);transform:skewX(-4deg);margin-left:5px}
+  .stage{flex:1;display:flex;align-items:flex-end;gap:24px;margin-top:6px}
+  .moves{display:flex;gap:18px;align-items:flex-end}
+  .move{text-align:center}
+  .move img{height:158px;width:auto;display:block;filter:drop-shadow(3px 4px 0 #000b)}
+  .move.hero img{height:216px}
+  .move span{display:inline-block;margin-top:6px;background:var(--white);color:var(--ink);padding:3px 10px;
+    font:800 12.5px/1 "PingFang SC";transform:skewX(-6deg);box-shadow:2px 2px 0 var(--red)}
+  .phone{width:296px;align-self:center;margin-bottom:8px;background:#0c0a0f;border:2px solid var(--white);
+    box-shadow:6px 6px 0 var(--red),10px 10px 0 #000c;transform:skewX(-1.4deg)}
+  .ph-h{display:flex;align-items:center;gap:9px;padding:9px 12px;background:var(--red);border-bottom:2px solid var(--ink)}
+  .ph-h .m{width:26px;height:16px;background:radial-gradient(circle at 30% 55%,var(--ink) 0 3px,transparent 3.5px),
+    radial-gradient(circle at 70% 55%,var(--ink) 0 3px,transparent 3.5px),var(--white);
+    clip-path:polygon(0 60%,22% 10%,50% 34%,78% 10%,100% 60%,80% 74%,50% 56%,20% 74%)}
+  .ph-h b{font:900 13px/1 "Arial Black",Impact;letter-spacing:.05em}
+  .ph-h i{font-style:normal;font-size:9.5px;opacity:.85;letter-spacing:.12em;display:block;margin-top:2px}
+  .log{padding:11px 10px;display:flex;flex-direction:column;gap:8px;
+    background:repeating-linear-gradient(-45deg,#ffffff05 0 2px,transparent 2px 9px),#0c0a0f}
+  .row{display:flex}.row.me{justify-content:flex-end}
+  .msg{max-width:80%;padding:6px 10px;font:600 12.5px/1.5 "PingFang SC";transform:skewX(-3deg);box-shadow:2px 2px 0 #000a;white-space:pre-line}
+  .mona .msg{background:var(--white);color:var(--ink)}.me .msg{background:var(--red);color:#fff}
+  .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:20px}
+  .feat{background:#12090dcc;border-left:4px solid var(--red);padding:11px 14px;transform:skewX(-1deg);box-shadow:3px 3px 0 #0007}
+  .feat h3{font:900 15px/1 "PingFang SC";letter-spacing:.03em;display:flex;align-items:center;gap:8px}
+  .feat h3 .k{font-size:18px}
+  .feat p{margin-top:5px;font:500 12px/1.5 "PingFang SC";color:#e3cbc9cc}
+  .feat .hot{color:var(--yellow)}
+  .foot{margin-top:16px;text-align:center;font:600 11px/1.7 "PingFang SC";color:#6b5c63;letter-spacing:.08em}
+</style></head>
+<body>
+  <div class="bg"></div>
+  <svg class="shards" viewBox="0 0 1400 1000" preserveAspectRatio="none">
+    <path d="M0 0 L250 0 L120 120 L200 190 L0 240 Z" fill="#ec0a2e" opacity=".9"/>
+    <path d="M0 1000 L0 760 L180 860 L90 940 L240 1000 Z" fill="#a30722"/>
+    <path d="M1400 0 L1400 210 L1250 120 L1320 60 Z" fill="#ec0a2e" opacity=".8"/>
+    <path d="M40 40 L58 4 L74 44 L112 28 L88 62 Z" fill="#fbf7f4"/></svg>
+  <div class="dots"></div><div class="frame"></div>
+  <div class="wrap">
+    <span class="kick">★ MIRASIM SKIN · PHANTOM</span>
+    <h1>MORGANA</h1>
+    <div class="sub">怪盗团军师 · 你的本地桌面搭子</div>
+    <div class="stage">
+      <div class="moves">
+        <div class="move"><img src="skin/assets/mona-sit.png"><span>待命</span></div>
+        <div class="move hero"><img src="skin/assets/mona-jump.png"><span>跳跃 / 点击</span></div>
+        <div class="move"><img src="skin/assets/mona-walk.png"><span>散步</span></div>
+        <div class="move"><img src="skin/assets/mona-sleep.png"><span>挂机睡觉</span></div>
+      </div>
+      <div class="phone">
+        <div class="ph-h"><span class="m"></span><div><b>MORGANA</b><i>怪盗团 · 军师</i></div></div>
+        <div class="log">
+          <div class="row me"><div class="msg">几点了</div></div>
+          <div class="row mona"><div class="msg">现在 02:15 了，这个点真该睡了喵。</div></div>
+          <div class="row me"><div class="msg">记一下 给皮肤加音效</div></div>
+          <div class="row mona"><div class="msg">记下了（第 1 条）：给皮肤加音效</div></div>
+          <div class="row me"><div class="msg">待办</div></div>
+          <div class="row mona"><div class="msg">待办 1 条：
+1. 给皮肤加音效</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="feats">
+      <div class="feat"><h3><span class="k">🐱</span>本地助手</h3><p>问<span class="hot">时间 / 日期</span>、记<span class="hot">待办</span>、要<span class="hot">战况速报</span>、闲聊——即时、离线、零联网。</p></div>
+      <div class="feat"><h3><span class="k">📣</span>怪盗播报</h3><p>会话<span class="hot">跑完 / 翻车 / 等你批准</span>，她第一时间喊话。</p></div>
+      <div class="feat"><h3><span class="k">✋</span>全员可拖动</h3><p>猫和手机对话框都能拖，<span class="hot">记住位置</span>，不弹回。</p></div>
+      <div class="feat"><h3><span class="k">⏱</span>番茄专注</h3><p>25 分钟计时挂头顶，结束 <span class="hot">SHOWTIME</span> 庆祝。</p></div>
+      <div class="feat"><h3><span class="k">🎴</span>功能菜单</h3><p>右键唤出：聊天、专注、运势、战况、换肤、隐身。</p></div>
+      <div class="feat"><h3><span class="k">😴</span>活的动效</h3><p>散步、眨眼、久挂机<span class="hot">趴下睡觉</span>，你一动就醒。</p></div>
+    </div>
+    <div class="foot">MIRASIM × PHANTOM THIEVES — 风格致敬同人作品 · 100% 本地 · 无个人信息</div>
+  </div>
+</body></html>

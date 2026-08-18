@@ -1,0 +1,1544 @@
+/* ============================================================
+   Mirasim skin — "怪盗 / Phantom" (Persona 5–inspired)  v3
+   ------------------------------------------------------------
+   Pure ink black / vivid card red / mask white — contrast turned
+   all the way up. Everything slants. The mask leads, the phone
+   waits in the wings, calling cards fly.
+
+   Style-inspired only: no official marks, no character art, no
+   game assets. Every graphic is hand-drawn inline SVG.
+
+   Scoped to html[data-skin="persona5"] (set by the injector's
+   toggle template, hotkey Alt+Shift+K). Specificity (0,1,1)
+   beats the app's :root / [data-theme=*] token blocks (0,1,0).
+
+   Layers:
+     1. tokens          — full semantic override, high contrast
+     2. textures        — halftone + scratches on <body>
+     3. chrome details  — selection, caret, scrollbars, snap
+     4. structure       — sidebar spine, strip, composer, header
+     5. FX              — #mirasim-skin-fx overlay (fx.js):
+                          mask emblem, phone watermark, calling
+                          card, click bursts, date tag, showtime
+   ============================================================ */
+
+html[data-skin="persona5"] {
+  /* ---- palette ------------------------------------------- */
+  --p5-void:      #060406;
+  --p5-ink:       #030203;
+  --p5-panel:     #120b0e;
+  --p5-panel-alt: #150d10;
+  --p5-raised:    #1c1216;
+  --p5-elev:      #261720;
+
+  --p5-red:      #ec0a2e;   /* the calling card */
+  --p5-red-hot:  #ff2442;
+  --p5-red-deep: #a30722;
+  --p5-blood:    #57061a;
+  --p5-white:    #fbf7f4;   /* the mask */
+  --p5-yellow:   #ffd23f;   /* the warning shot */
+  --p5-velvet:   #6d7bff;   /* the room between */
+  --p5-green:    #41d97f;
+
+  /* fx tunables — override live with `mirasim-skin set` */
+  --p5-emblem-opacity: .06;
+  --p5-phone-opacity:  .05;
+
+  /* ---- shape language: razors, not pills ------------------ */
+  --radius-sm:     0px;
+  --radius-md:     1px;
+  --radius-lg:     2px;
+  --radius-xl:     3px;
+  --radius-2xl:    5px;
+  --radius-bubble: 3px;
+
+  /* ---- surfaces ------------------------------------------ */
+  --th-surface:   var(--p5-void);
+  --surface-0:    var(--p5-void);
+  --surface-1:    var(--p5-ink);
+  --surface-2:    var(--p5-panel);
+  --surface-3:    var(--p5-raised);
+  --surface-elev: var(--p5-elev);
+  --th-rail:      var(--p5-ink);
+  --th-raised:    var(--surface-3);
+  --agent-ink-mix: 100%;
+
+  /* ---- foreground: pure white on ink ---------------------- */
+  --th-fg:   #ffffff;
+  --th-fg-2: #fdfaf8ef;
+  --th-fg-3: #f8f1eedb;
+  --th-fg-4: #f0e2dfc4;
+  --th-fg-5: #e3cbc9b3;
+  --th-fg-6: #d0a9a966;
+  /* translucent wash, matching the app's own dark-theme recipe —
+     a solid fill here paints white-on-white bubbles */
+  --bubble-fill: color-mix(in oklab, var(--th-fg) 11%, transparent);
+
+  /* ---- panels & insets ----------------------------------- */
+  --th-panel:     var(--surface-2);
+  --th-panel-h:   var(--surface-3);
+  --th-panel-alt: var(--p5-panel-alt);
+  --th-inset:     #0a060a;
+  --th-inset-hl:  #ff244214;
+
+  /* ---- controls ------------------------------------------ */
+  --th-control-bg:       #1d1014;
+  --th-control-bg-h:     #291419;
+  --th-control-border:   #ffffff42;
+  --th-control-border-h: #ffffff70;
+
+  /* ---- edges: bright white hairlines ----------------------- */
+  --th-edge:      #ffffff38;
+  --th-edge-h:    #ffffff66;
+  --edge-subtle:  #ffffff21;
+  --edge-default: #ffffff38;
+  --edge-strong:  #ffffff5e;
+
+  /* ---- interaction: selection is a hard red splash --------- */
+  --layer-hover:      #ffffff17;
+  --layer-selected:   #ec0a2e54;
+  --layer-selected-h: #ec0a2e6b;
+  --layer-active:     #ec0a2e80;
+  --fill-card:        #00000052;
+  --fill-card-h:      #00000029;
+  --fill-chip:        #ff244217;
+
+  /* ---- primary action: the red ---------------------------- */
+  --th-primary:    #e60024;
+  --th-primary-fg: #ffffff;
+  --th-primary-h:  #ff1233;
+
+  /* ---- accent: the white mask ----------------------------- */
+  --accent:      #ffffff;
+  --accent-text: #ffffff;
+  --accent-fg:   #16040a;
+  --accent-dim:  #ffffff8c;
+  --focus-ring:  #ff244280;
+  --cursor-ring: #ff24428c;
+  --th-accent:   var(--accent);
+
+  --brand-accent:    var(--p5-red);
+  --brand-accent-fg: #ffffff;
+  --brand-glow-a:    #ec0a2ea6;
+  --brand-glow-b:    #a3072273;
+  --brand-glow-idle: #ec0a2e00;
+
+  /* ---- chrome -------------------------------------------- */
+  --th-sidebar:  var(--surface-1);
+  --th-header:   #060406e0;
+  --th-modal-bg: var(--p5-elev);
+  --th-overlay:  #020103ad;
+  --th-dropdown: var(--surface-elev);
+
+  /* ---- ambient (the app's own orb/grid layer) ------------- */
+  --th-grid-dot:    #ff244236;
+  --th-grad-start:  var(--p5-red-hot);
+  --th-grad-mid:    #ffffff;
+  --th-grad-end:    var(--p5-red-deep);
+  --th-glow-a:      #ec0a2e38;
+  --th-glow-b:      #ffffff12;
+  --th-shimmer-a:   #ff24421c;
+  --th-shimmer-b:   #ffffff1f;
+  --th-orb1:        #ec0a2e40;
+  --th-orb2:        #ffffff1a;
+  --th-orb3:        #a3072226;
+  --th-noise:       .032;
+
+  /* ---- elevation: hard shadows, bright top rim -------------- */
+  --elev-1: 0 1px 0 #ffffff1c, 0 6px 18px -8px #000000f0;
+  --elev-2: 0 1px 0 #ffffff26, 0 14px 34px -14px #000000f7;
+  --elev-3: 0 1px 0 #ffffff30, 0 26px 60px -18px #000000fa;
+  --pane-bg:            var(--surface-2);
+  --pane-edge:          var(--edge-subtle);
+  --pane-shadow-rest:   0 1px 2px #00000066, 1px 2px 6px -5px #00000085;
+  --pane-shadow-active: 0 1px 3px #00000078, 1px 3px 8px -6px #00000094;
+  --th-card-shadow:     var(--elev-1);
+
+  /* ---- status -------------------------------------------- */
+  --th-ok:            var(--p5-green);
+  --th-ok-glow:       #41d97f73;
+  --th-warn:          #ffc32b;
+  --th-warn-glow:     #ffc32b73;
+  --th-err:           #ff4d64;
+  --th-err-glow:      #ff4d6480;
+  --th-info:          var(--p5-velvet);
+  --th-info-glow:     #6d7bff73;
+  --th-running:       var(--p5-yellow);
+  --th-running-glow:  #ffd23f80;
+  --th-idle:          #b48f979e;
+
+  /* ---- badges: brighter chips ------------------------------ */
+  --th-badge-ok-text:   #ccffe0;
+  --th-badge-ok-bg:     #41d97f2b;
+  --th-badge-ok-border: #41d97f59;
+
+  --th-badge-warn-text:   #fff0bd;
+  --th-badge-warn-bg:     #ffc32b2b;
+  --th-badge-warn-border: #ffc32b59;
+
+  --th-badge-err-text:   #ffdce0;
+  --th-badge-err-bg:     #ec0a2e38;
+  --th-badge-err-border: #ff4d6466;
+
+  --th-badge-info-text:   #e0e4ff;
+  --th-badge-info-bg:     #6d7bff2b;
+  --th-badge-info-border: #6d7bff59;
+
+  --th-badge-running-text:   #fff3c4;
+  --th-badge-running-bg:     #ffd23f2b;
+  --th-badge-running-border: #ffd23f61;
+
+  --th-badge-muted-text:   #e3cbc9b3;
+  --th-badge-muted-bg:     #ffffff12;
+  --th-badge-muted-border: #ffffff2e;
+
+  --th-badge-accent-text:   var(--accent-fg);
+  --th-badge-accent-bg:     var(--accent);
+  --th-badge-accent-border: #ffffff70;
+
+  --mission-change-color: var(--p5-yellow);
+  --mission-motion-color: var(--p5-red-hot);
+
+  /* ---- syntax: brighter, red leads -------------------------- */
+  --syn-keyword: #ff5673;
+  --syn-string:  #5ce68e;
+  --syn-number:  #ffbb33;
+  --syn-func:    #ffe084;
+  --syn-type:    #9aa6ff;
+  --syn-comment: #97707c;
+  --syn-meta:    #7ee0f2;
+
+  /* ---- terminal ------------------------------------------ */
+  --term-bg:            #070407;
+  --term-fg:            #f6ede9;
+  --term-cursor:        var(--p5-red);
+  --term-cursor-accent: #070407;
+  --term-selection:     #a3072273;
+
+  --term-ansi-0:  #241419;
+  --term-ansi-1:  #ff3352;
+  --term-ansi-2:  #3bd478;
+  --term-ansi-3:  #ffc82f;
+  --term-ansi-4:  #7784ff;
+  --term-ansi-5:  #cf78ff;
+  --term-ansi-6:  #45d4de;
+  --term-ansi-7:  #f6ede9;
+  --term-ansi-8:  #7d5763;
+  --term-ansi-9:  #ff6079;
+  --term-ansi-10: #58f096;
+  --term-ansi-11: #ffe374;
+  --term-ansi-12: #a3aeff;
+  --term-ansi-13: #dd9bff;
+  --term-ansi-14: #6fe6ef;
+  --term-ansi-15: #ffffff;
+}
+
+/* ============================================================
+   2. Texture layers on <body> — fixed, pointer-events:none.
+   ============================================================ */
+
+html[data-skin="persona5"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  opacity: .06;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cg fill='none' stroke-linecap='square'%3E%3Cpath d='M28 44 l30 -16' stroke='%23ec0a2e' stroke-width='2.4'/%3E%3Cpath d='M33 52 l20 -11' stroke='%23ec0a2e' stroke-width='1.2' opacity='.7'/%3E%3Cpath d='M176 62 l-24 10' stroke='%23ffffff' stroke-width='1.4' opacity='.8'/%3E%3Cpath d='M92 194 l28 -12' stroke='%23ec0a2e' stroke-width='2'/%3E%3Cpath d='M97 201 l19 -8' stroke='%23ffffff' stroke-width='1' opacity='.6'/%3E%3Cpath d='M206 150 l14 -6' stroke='%23ffffff' stroke-width='1.2' opacity='.7'/%3E%3Cpath d='M52 128 l-16 7' stroke='%23ec0a2e' stroke-width='1.2' opacity='.55'/%3E%3C/g%3E%3Cpath d='M146 104 l3.2 6.6 7.2 1 -5.2 5.1 1.2 7.2 -6.4 -3.4 -6.4 3.4 1.2 -7.2 -5.2 -5.1 7.2 -1 Z' fill='%23ffffff' opacity='.55'/%3E%3Cpath d='M212 208 l2 4.1 4.5 .6 -3.2 3.2 .7 4.5 -4 -2.1 -4 2.1 .7 -4.5 -3.2 -3.2 4.5 -.6 Z' fill='%23ec0a2e' opacity='.6'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='4.5' cy='4.5' r='1.4'/%3E%3Ccircle cx='13.5' cy='13.5' r='1.4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 240px 240px, 18px 18px;
+}
+
+html[data-skin="persona5"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147483001;
+  pointer-events: none;
+  background-image:
+    radial-gradient(100% 62% at 0% 100%, #ec0a2e1c, #ec0a2e00 60%);
+  box-shadow:
+    inset 0 2px 0 #ec0a2e66,
+    inset 0 0 0 1px #ffffff1a,
+    inset 0 -1px 0 #a307224d;
+}
+
+/* ============================================================
+   3. Small chrome details the tokens can't reach
+   ============================================================ */
+
+html[data-skin="persona5"] ::selection {
+  background: #ec0a2e99;
+  color: #ffffff;
+}
+
+html[data-skin="persona5"] input,
+html[data-skin="persona5"] textarea {
+  caret-color: var(--p5-red-hot);
+}
+
+/* the snap: every press lands with a 1px stamp */
+html[data-skin="persona5"] button:active {
+  transform: translate(1px, 1px);
+}
+html[data-skin="persona5"] :focus-visible {
+  outline: 2px solid #ff244299;
+  outline-offset: 1px;
+}
+
+/* Scrollbars: razor-cut, red/black hazard stripe */
+html[data-skin="persona5"] *::-webkit-scrollbar { width: 9px; height: 9px; }
+html[data-skin="persona5"] *::-webkit-scrollbar-track { background: transparent; }
+html[data-skin="persona5"] *::-webkit-scrollbar-thumb {
+  background: repeating-linear-gradient(-45deg, #a30722d9 0 6px, #e60024d9 6px 12px);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 0;
+}
+html[data-skin="persona5"] *::-webkit-scrollbar-thumb:hover {
+  background: repeating-linear-gradient(-45deg, #e60024 0 6px, #ff2442 6px 12px);
+  background-clip: padding-box;
+}
+
+/* ============================================================
+   4. Structure — hooked on the app's own stable data-* attrs.
+   Zero-layout-impact techniques only; unmatched hooks degrade
+   silently after app updates.
+   ============================================================ */
+
+html[data-skin="persona5"] [data-testid="workbench-entries"] {
+  box-shadow: inset 3px 0 0 #ec0a2e, inset 5px 0 0 #ffffff33;
+  background-image:
+    linear-gradient(165deg, #ec0a2e12, transparent 34%),
+    repeating-linear-gradient(-58deg, #ffffff06 0 1px, transparent 1px 9px);
+}
+
+html[data-skin="persona5"] [data-testid="group-strip"] {
+  box-shadow: inset 0 -3px 0 #ec0a2ecc, inset 0 -4px 0 #ffffff29;
+}
+
+html[data-skin="persona5"] header {
+  box-shadow: inset 0 -2px 0 #ec0a2e73;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23ffffff' opacity='.06'/%3E%3Ccircle cx='10' cy='10' r='1' fill='%23ffffff' opacity='.06'/%3E%3C/svg%3E");
+}
+
+html[data-skin="persona5"] [data-composer="root"] {
+  box-shadow:
+    inset 0 2px 0 #ec0a2ea6,
+    inset 0 3px 0 #ffffff26,
+    inset 0 0 0 1px #ffffff17,
+    0 -14px 34px -26px #ec0a2ee6;
+}
+
+html[data-skin="persona5"] [data-composer-btn="send"] {
+  transform: skewX(-7deg);
+  box-shadow: 3px 3px 0 #ffffff42, 0 2px 14px -2px #a3072280;
+}
+html[data-skin="persona5"] [data-composer-btn="send"]:active {
+  transform: skewX(-7deg) translate(1px, 1px);
+}
+
+html[data-skin="persona5"] [data-pane-project] {
+  background-image: linear-gradient(200deg, #ec0a2e0d, transparent 40%);
+}
+
+/* the P5 nudge: rows and tabs shift on hover, snap back on press.
+   `translate` composes with any transform the app already applies. */
+html[data-skin="persona5"] [data-testid="workbench-entries"] button,
+html[data-skin="persona5"] [data-testid="group-strip"] button,
+html[data-skin="persona5"] [data-workspace-actions] button {
+  transition: translate .13s cubic-bezier(.2, 1.3, .3, 1);
+}
+html[data-skin="persona5"] [data-testid="workbench-entries"] button:hover {
+  translate: 3px 0;
+}
+html[data-skin="persona5"] [data-testid="group-strip"] button:hover {
+  translate: 0 -1px;
+}
+html[data-skin="persona5"] [data-composer-btn]:not([data-composer-btn="send"]):hover {
+  translate: 0 -1px;
+}
+html[data-skin="persona5"] [data-composer-btn="send"]:hover {
+  transform: skewX(-7deg) scale(1.05);
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-skin="persona5"] [data-testid="workbench-entries"] button,
+  html[data-skin="persona5"] [data-testid="group-strip"] button,
+  html[data-skin="persona5"] [data-workspace-actions] button {
+    transition: none;
+  }
+}
+
+/* ============================================================
+   5. FX layer (#mirasim-skin-fx, mounted by fx.js)
+   ============================================================ */
+
+#mirasim-skin-fx { display: none; }
+
+html[data-skin="persona5"] #mirasim-skin-fx {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483002;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ---- concentric menu rings, slowly turning ------------------ */
+
+#mirasim-skin-fx .p5-rings {
+  position: absolute;
+  left: -14%;
+  bottom: -26%;
+  width: 58vw;
+  min-width: 620px;
+  aspect-ratio: 1;
+  opacity: .04;
+}
+#mirasim-skin-fx .p5-rings svg { width: 100%; height: 100%; display: block; }
+.p5RingsSpin {
+  transform-origin: 600px 600px;
+  animation: p5-spin 70s linear infinite;
+}
+
+/* ---- ambient: beams, bloom, vignette, slash ---------------- */
+
+#mirasim-skin-fx .p5-beam {
+  position: absolute;
+  top: -40%;
+  height: 180%;
+  will-change: opacity, translate;
+}
+#mirasim-skin-fx .p5-beam.b1 {
+  left: -8vw;
+  width: 34vw;
+  transform: rotate(24deg);
+  background: linear-gradient(90deg,
+    transparent, #ec0a2e1a 30%, #ec0a2e29 50%, #ec0a2e1a 70%, transparent);
+  animation: p5-beam 18s ease-in-out infinite alternate;
+}
+#mirasim-skin-fx .p5-beam.b2 {
+  right: 2vw;
+  width: 20vw;
+  transform: rotate(24deg);
+  background: linear-gradient(90deg,
+    transparent, #a307221f 40%, #ec0a2e1c 55%, transparent);
+  animation: p5-beam 26s ease-in-out infinite alternate-reverse;
+}
+#mirasim-skin-fx .p5-beam.b3 {
+  left: 22vw;
+  width: 2px;
+  transform: rotate(24deg);
+  background: linear-gradient(180deg,
+    transparent, #ffffff1a 30%, #ffffff2b 50%, #ffffff1a 70%, transparent);
+  animation: p5-beam 18s ease-in-out infinite alternate;
+}
+@keyframes p5-beam {
+  from { opacity: .5; translate: 0 0; }
+  to   { opacity: 1;  translate: 2.5vw 0; }
+}
+
+#mirasim-skin-fx .p5-bloom {
+  position: absolute;
+  inset: auto auto -24% -14%;
+  width: 70%;
+  height: 62%;
+  background:
+    radial-gradient(60% 75% at 18% 88%, #ec0a2e2e, #ec0a2e00 68%),
+    radial-gradient(32% 46% at 6% 96%, #ff24421c, #ff244200 70%);
+  animation: p5-breath 12s ease-in-out infinite alternate;
+}
+@keyframes p5-breath {
+  from { opacity: .55; transform: translateY(2.5%) scale(1); }
+  to   { opacity: 1;   transform: translateY(0)    scale(1.06); }
+}
+
+#mirasim-skin-fx .p5-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 92% at 50% 42%, #02010300 55%, #02010380 100%);
+}
+
+#mirasim-skin-fx .p5-slash {
+  position: absolute;
+  top: -35%;
+  left: 0;
+  width: 24vw;
+  height: 170%;
+  transform: rotate(-19deg);
+  background: linear-gradient(90deg,
+    transparent 42%, #ff24421a 45%, #ffffff21 49%, #ffffff21 51%,
+    #ec0a2e1a 55%, transparent 58%);
+  animation: p5-slash 24s linear infinite;
+}
+@keyframes p5-slash {
+  0%   { translate: -50vw 0; }
+  6%   { translate: 160vw 0; }
+  100% { translate: 160vw 0; }
+}
+
+/* ---- corners ----------------------------------------------- */
+
+#mirasim-skin-fx .p5-corner {
+  position: absolute;
+  width: 196px;
+  height: 196px;
+  opacity: 0;
+  animation: p5-corner-in .5s cubic-bezier(.16, 1.4, .3, 1) forwards;
+}
+#mirasim-skin-fx .p5-corner svg { width: 100%; height: 100%; display: block; }
+/* cascade: the shards slam in one after another, each spinning to rest */
+#mirasim-skin-fx .p5-tl { top: 0; left: 0; animation-delay: .1s; }
+#mirasim-skin-fx .p5-tr { top: 0; right: 0; transform: scaleX(-1); animation-delay: .18s; }
+#mirasim-skin-fx .p5-bl { bottom: 0; left: 0; transform: scaleY(-1); animation-delay: .26s; }
+#mirasim-skin-fx .p5-br { bottom: 0; right: 0; transform: scale(-1); animation-delay: .34s; }
+@keyframes p5-corner-in {
+  from { opacity: 0;   translate: -18px -18px; rotate: -9deg; scale: 1.12; }
+  70%  { opacity: .62; rotate: 2deg; }
+  to   { opacity: .62; translate: 0 0;         rotate: 0deg;  scale: 1; }
+}
+
+/* ---- emblem: the mask on a double splat --------------------- */
+
+#mirasim-skin-fx .p5-emblem {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: min(48vw, 560px);
+  transform: translate(-50%, -50%);
+  opacity: var(--p5-emblem-opacity, .06);
+  animation: p5-emblem-in .9s cubic-bezier(.2, 1.1, .3, 1) both;
+}
+@keyframes p5-emblem-in {
+  from { opacity: 0; rotate: -14deg; scale: 1.35; }
+  to   { opacity: var(--p5-emblem-opacity, .06); rotate: 0deg; scale: 1; }
+}
+#mirasim-skin-fx .p5-emblem svg { width: 100%; height: auto; display: block; }
+.p5Spikes {
+  transform-origin: 130px 130px;
+  animation: p5-spin 140s linear infinite;
+}
+.p5SpikesB {
+  transform-origin: 130px 130px;
+  animation: p5-spin 200s linear infinite reverse;
+}
+@keyframes p5-spin { to { transform: rotate(360deg); } }
+.p5Ants { animation: p5-ants 26s linear infinite; }
+@keyframes p5-ants { to { stroke-dashoffset: -260; } }
+
+/* ---- the phone, waiting in the wings ------------------------- */
+
+#mirasim-skin-fx .p5-phone {
+  position: absolute;
+  left: 3.5%;
+  bottom: 16%;
+  width: clamp(120px, 11vw, 170px);
+  opacity: var(--p5-phone-opacity, .05);
+  animation: p5-phone-float 9s ease-in-out infinite alternate;
+}
+#mirasim-skin-fx .p5-phone svg { width: 100%; height: auto; display: block; }
+@keyframes p5-phone-float {
+  from { transform: rotate(-14deg) translateY(0); }
+  to   { transform: rotate(-11deg) translateY(-10px); }
+}
+
+/* ---- particles ---------------------------------------------- */
+
+#mirasim-skin-fx .p5-depth { position: absolute; inset: 0; }
+#mirasim-skin-fx .p5-d1 { filter: blur(1.1px); }
+#mirasim-skin-fx .p5-p {
+  position: absolute;
+  top: 0;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: p5-drift var(--dur, 26s) linear var(--del, 0s) infinite;
+}
+#mirasim-skin-fx .p5-p svg { display: block; }
+@keyframes p5-drift {
+  0%   { transform: translate3d(var(--sx0, 0), 110vh, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: var(--po, .08); }
+  48%  { opacity: var(--po, .08); }
+  54%  { opacity: calc(var(--po, .08) * .35); }
+  60%  { opacity: var(--po, .08); }
+  86%  { opacity: var(--po, .08); }
+  100% { transform: translate3d(var(--sx1, -6vw), -14vh, 0) rotate(var(--rot, 80deg)); opacity: 0; }
+}
+
+/* ---- comet ---------------------------------------------------- */
+
+#mirasim-skin-fx .p5-comet {
+  position: absolute;
+  will-change: transform, opacity;
+  animation: p5-comet .9s cubic-bezier(.2, .6, .3, 1) forwards;
+}
+@keyframes p5-comet {
+  0%   { transform: translate3d(0, 0, 0) rotate(var(--cr, -16deg)); opacity: 0; }
+  12%  { opacity: .6; }
+  100% { transform: translate3d(var(--cx, -46vw), var(--cy, 20vh), 0) rotate(var(--cr, -16deg)); opacity: 0; }
+}
+
+/* ---- click burst ----------------------------------------------- */
+
+#mirasim-skin-fx .p5-click {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  animation: p5-ck-life .56s linear forwards; /* cleanup clock */
+}
+#mirasim-skin-fx .p5-click svg { width: 100%; height: 100%; display: block; overflow: visible; }
+@keyframes p5-ck-life { to { opacity: .999; } }
+
+.ckFlash {
+  transform-origin: 75px 75px;
+  animation: p5-ck-flash .16s cubic-bezier(.2, .9, .3, 1) forwards;
+}
+@keyframes p5-ck-flash {
+  0%   { transform: scale(1.55) rotate(-24deg); opacity: 1; }
+  100% { transform: scale(.12) rotate(10deg);  opacity: 0; }
+}
+.ckSplat {
+  transform-origin: 75px 75px;
+  animation: p5-ck-splat .5s cubic-bezier(.16, 1.2, .3, 1) forwards;
+}
+@keyframes p5-ck-splat {
+  0%   { transform: scale(.18) rotate(var(--ca, -12deg)); opacity: 1; }
+  55%  { transform: scale(1.05) rotate(calc(var(--ca, -12deg) + 9deg)); opacity: .95; }
+  78%  { opacity: .88; }
+  100% { transform: scale(1.14) rotate(calc(var(--ca, -12deg) + 13deg)); opacity: 0; }
+}
+.ckCore {
+  transform-origin: 75px 75px;
+  animation: p5-ck-core .42s cubic-bezier(.16, 1.3, .3, 1) forwards;
+}
+@keyframes p5-ck-core {
+  0%   { transform: scale(0) rotate(30deg); opacity: 1; }
+  50%  { transform: scale(1.1) rotate(-6deg); opacity: 1; }
+  100% { transform: scale(.9) rotate(-10deg); opacity: 0; }
+}
+.ckRing {
+  transform-origin: 75px 75px;
+  animation: p5-ck-ring .5s cubic-bezier(.2, .8, .2, 1) forwards;
+}
+@keyframes p5-ck-ring {
+  0%   { transform: scale(.3); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+.ckShard {
+  transform-origin: 75px 75px;
+  animation: p5-ck-shard .52s cubic-bezier(.14, .8, .2, 1) forwards;
+}
+@keyframes p5-ck-shard {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx, 40px), var(--dy, -40px)) rotate(var(--rr, 90deg)) scale(.5); opacity: 0; }
+}
+#mirasim-skin-fx .p5-click .ckCard {
+  transform-origin: 75px 75px;
+  animation: p5-ck-card .62s cubic-bezier(.2, .7, .3, 1) forwards;
+}
+@keyframes p5-ck-card {
+  0%   { transform: translate(0, 6px) rotate(-8deg) scale(.4); opacity: 0; }
+  18%  { opacity: 1; }
+  100% { transform: translate(26px, 74px) rotate(312deg) scale(1); opacity: 0; }
+}
+
+/* ---- the calling card (activation) --------------------------- */
+
+#mirasim-skin-fx .p5-card {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: min(64vw, 560px);
+  aspect-ratio: 36 / 23;
+  margin-left: calc(min(64vw, 560px) / -2);
+  filter: drop-shadow(0 24px 48px #000000e0) drop-shadow(0 0 34px #ec0a2e4d);
+}
+#mirasim-skin-fx .p5-card .p5-card-h {
+  position: absolute;
+  inset: 0;
+  animation: p5-card-in .3s cubic-bezier(.16, 1.2, .3, 1) both;
+}
+#mirasim-skin-fx .p5-card .p5-card-h svg { width: 100%; height: 100%; display: block; }
+#mirasim-skin-fx .p5-card .hL { clip-path: polygon(0 0, 58% 0, 42% 100%, 0 100%); }
+#mirasim-skin-fx .p5-card .hR { clip-path: polygon(58% 0, 100% 0, 100% 100%, 42% 100%); }
+@keyframes p5-card-in {
+  0%   { transform: scale(2.05) rotate(-15deg); opacity: 0; }
+  60%  { transform: scale(.96) rotate(-5deg);  opacity: 1; }
+  100% { transform: scale(1) rotate(-6deg);    opacity: 1; }
+}
+#mirasim-skin-fx .p5-card.out .hL {
+  animation: p5-card-outL .4s cubic-bezier(.5, 0, .8, .4) forwards;
+}
+#mirasim-skin-fx .p5-card.out .hR {
+  animation: p5-card-outR .44s cubic-bezier(.5, 0, .8, .4) forwards;
+}
+@keyframes p5-card-outL {
+  to { transform: translate(-11vw, 9vh) rotate(-13deg); opacity: 0; }
+}
+@keyframes p5-card-outR {
+  to { transform: translate(12vw, -7vh) rotate(11deg); opacity: 0; }
+}
+
+/* ---- the date tag, bottom-right (Alt+Shift+U) ----------------- */
+
+#mirasim-skin-fx .p5-stack {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 9px;
+}
+#mirasim-skin-fx .p5-date {
+  animation: p5-date-in .55s cubic-bezier(.16, 1.5, .3, 1) .5s both;
+  display: flex;
+  align-items: stretch;
+  gap: 9px;
+  padding: 6px 13px 6px 11px;
+  background: #e60024;
+  border: 2.5px solid #ffffff;
+  box-shadow: 5px 5px 0 #000000cc, inset 0 0 0 1px #a30722;
+  transform: skewX(-11deg) rotate(-.5deg);
+  font-family: "Avenir Next Condensed", "Arial Narrow", Futura,
+    -apple-system, sans-serif;
+  color: #ffffff;
+}
+#mirasim-skin-fx .p5-date > * { transform: skewX(4deg); }
+#mirasim-skin-fx .p5-date .dDay {
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .01em;
+  text-shadow: 2.5px 2.5px 0 #57061a;
+}
+#mirasim-skin-fx .p5-date .dCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: .14em;
+}
+#mirasim-skin-fx .p5-date .dCol i {
+  font-style: normal;
+  color: #ffe0e4;
+}
+#mirasim-skin-fx .p5-date .dCol i + i { color: #ffffff; }
+#mirasim-skin-fx .p5-date .dStar {
+  width: 16px;
+  align-self: center;
+  animation: p5-spin 22s linear infinite;
+}
+#mirasim-skin-fx .p5-date .dStar svg { display: block; width: 100%; height: auto; }
+@keyframes p5-date-in {
+  from { transform: skewX(-11deg) rotate(-.5deg) translateX(140px); opacity: 0; }
+  70%  { transform: skewX(-11deg) rotate(-.5deg) translateX(-6px);  opacity: 1; }
+  to   { transform: skewX(-11deg) rotate(-.5deg) translateX(0);     opacity: .94; }
+}
+
+/* ---- showtime (Alt+Shift+S) ------------------------------------ */
+
+#mirasim-skin-fx .p5-show { position: absolute; inset: 0; }
+#mirasim-skin-fx .p5-show .swBeam {
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  width: 30vw;
+  height: 180%;
+  margin-left: -15vw;
+  background: linear-gradient(90deg,
+    transparent 38%, #ec0a2e40 44%, #ffffff4d 50%, #ec0a2e40 56%, transparent 62%);
+  animation: p5-sw-beam .55s cubic-bezier(.2, .7, .2, 1) forwards;
+}
+#mirasim-skin-fx .p5-show .swBeam.r { animation-name: p5-sw-beam-r; }
+@keyframes p5-sw-beam {
+  0%   { transform: rotate(28deg) translateX(-90vw); opacity: 1; }
+  100% { transform: rotate(28deg) translateX(90vw);  opacity: 0; }
+}
+@keyframes p5-sw-beam-r {
+  0%   { transform: rotate(-24deg) translateX(90vw);  opacity: 1; }
+  100% { transform: rotate(-24deg) translateX(-90vw); opacity: 0; }
+}
+#mirasim-skin-fx .p5-show .swPulse {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 100% at 50% 50%, #ec0a2e00 62%, #ec0a2e40 100%);
+  animation: p5-sw-pulse .8s ease-out forwards;
+}
+@keyframes p5-sw-pulse {
+  0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; }
+}
+
+/* ============================================================
+   Kill-switches: the app's data-anim-paused and the OS setting
+   ============================================================ */
+
+html[data-anim-paused] #mirasim-skin-fx *,
+html[data-anim-paused] #mirasim-skin-fx {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  #mirasim-skin-fx *, #mirasim-skin-fx { animation: none !important; }
+  #mirasim-skin-fx .p5-corner { opacity: .6; }
+  #mirasim-skin-fx .p5-card .p5-card-h { opacity: 1; }
+}
+
+/* ============================================================
+   v4 additions — settings cards, composer blade, nav invert,
+   ransom rail tag, Mona the pet. (Appended by the kakegurui
+   battle-tested hook discipline throughout.)
+   ============================================================ */
+
+/* every panel card takes a red corner slash — the signature mark.
+   background-image, not clip-path, so shadows survive. */
+html[data-skin="persona5"] .bg-panel {
+  background-image: linear-gradient(225deg, var(--p5-red) 9px, transparent 9.5px);
+  background-size: 22px 22px;
+  background-position: top right;
+  background-repeat: no-repeat;
+  transition: transform .14s ease;
+}
+html[data-skin="persona5"] .bg-panel:hover { transform: rotate(-.35deg); }
+
+/* top-nav destinations invert like the game's menu on hover */
+html[data-skin="persona5"] header a:hover,
+html[data-skin="persona5"] header button:hover {
+  background: var(--p5-white);
+  color: #0a0508;
+  transform: skewX(-6deg);
+}
+html[data-skin="persona5"] [aria-current="page"] {
+  background: var(--p5-red);
+  color: #fff;
+  transform: skewX(-6deg);
+  box-shadow: 3px 3px 0 #000c;
+}
+
+/* selected pills / segmented tabs: hard white-on-black invert */
+html[data-skin="persona5"] [role="tab"][aria-selected="true"],
+html[data-skin="persona5"] [data-active="true"] {
+  background: transparent;
+  color: var(--th-fg);
+  box-shadow: inset 0 -3px 0 var(--p5-red);
+}
+
+/* composer: a red blade down the left edge + white notch on top */
+html[data-skin="persona5"] [data-composer="root"] {
+  position: relative;
+}
+html[data-skin="persona5"] [data-composer="root"]::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 8%;
+  bottom: 8%;
+  width: 3px;
+  background: linear-gradient(180deg, var(--p5-red-hot), var(--p5-red-deep));
+  transform: skewY(-12deg);
+  box-shadow: 0 0 8px #ec0a2e66;
+  pointer-events: none;
+}
+html[data-skin="persona5"] [data-composer="root"]::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 24px;
+  width: 46px;
+  height: 3px;
+  background: var(--p5-white);
+  transform: skewX(-30deg);
+  pointer-events: none;
+}
+
+/* user bubbles: hard offset shadow, like a pasted-on dialog card */
+html[data-skin="persona5"] .rounded-\[var\(--radius-bubble\)\] {
+  box-shadow: 3px 3px 0 #000000b8, 0 0 0 1px #ffffff2b;
+}
+
+/* ---- ransom rail tag (built by fx) -------------------------- */
+#mirasim-skin-fx .p5-tag {
+  position: absolute;
+  left: 10px;
+  bottom: 132px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  pointer-events: none;
+  opacity: .85;
+}
+#mirasim-skin-fx .p5-tag i {
+  width: 19px;
+  height: 19px;
+  display: grid;
+  place-items: center;
+  font: 900 12px/1 "Arial Black", "Avenir Next Condensed", Impact, sans-serif;
+  font-style: normal;
+  background: var(--p5-white, #fbf7f4);
+  color: #0a0508;
+  box-shadow: 2px 2px 0 #000d;
+}
+#mirasim-skin-fx .p5-tag i:nth-child(2n) {
+  background: var(--p5-red, #ec0a2e);
+  color: #fff;
+}
+#mirasim-skin-fx .p5-tag i:nth-child(3n) { rotate: 7deg; }
+#mirasim-skin-fx .p5-tag i:nth-child(3n+1) { rotate: -6deg; }
+#mirasim-skin-fx .p5-tag i:nth-child(5n) { rotate: 12deg; }
+
+/* ---- Mona the pet ------------------------------------------- */
+#mirasim-skin-fx .p5-mona {
+  position: absolute;
+  bottom: 2px;
+  left: 40vw;
+  width: 76px;
+  height: 66px;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 5;
+  filter: drop-shadow(2px 3px 0 #000c);
+}
+#mirasim-skin-fx .p5-mona svg { width: 100%; height: 100%; display: block; }
+#mirasim-skin-fx .p5-mona.flip svg { transform: scaleX(-1); }
+#mirasim-skin-fx .p5-mona.walk .mona-body { animation: p5-mona-bob .36s ease-in-out infinite alternate; }
+#mirasim-skin-fx .p5-mona.walk .mona-legA { animation: p5-mona-leg .36s ease-in-out infinite alternate; }
+#mirasim-skin-fx .p5-mona.walk .mona-legB { animation: p5-mona-leg .36s ease-in-out infinite alternate-reverse; }
+#mirasim-skin-fx .p5-mona .mona-tail { transform-origin: 12px 44px; animation: p5-mona-tail 2.6s ease-in-out infinite; }
+#mirasim-skin-fx .p5-mona .mona-eye { transform-origin: center 46%; animation: p5-mona-blink 4.4s steps(1) infinite; }
+@keyframes p5-mona-bob  { from { transform: translateY(0); } to { transform: translateY(-2.5px); } }
+@keyframes p5-mona-leg  { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+@keyframes p5-mona-tail { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(14deg); } }
+@keyframes p5-mona-blink { 0%, 92%, 100% { transform: scaleY(1); } 94%, 97% { transform: scaleY(.08); } }
+
+#mirasim-skin-fx .p5-mona-say {
+  position: absolute;
+  bottom: 74px;
+  left: -20px;
+  min-width: 120px;
+  max-width: 210px;
+  padding: 7px 11px;
+  background: var(--p5-white, #fbf7f4);
+  color: #0a0508;
+  font: 700 12px/1.5 -apple-system, "PingFang SC", sans-serif;
+  transform: skewX(-4deg) rotate(-2deg);
+  box-shadow: 3px 3px 0 var(--p5-red, #ec0a2e), 5px 5px 0 #000c;
+  opacity: 0;
+  translate: 0 6px;
+  transition: opacity .16s ease, translate .16s ease;
+  pointer-events: none;
+}
+#mirasim-skin-fx .p5-mona-say.on { opacity: 1; translate: 0 0; }
+
+html[data-anim-paused] #mirasim-skin-fx .p5-mona *,
+html[data-anim-paused] #mirasim-skin-fx .p5-mona { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  #mirasim-skin-fx .p5-mona *, #mirasim-skin-fx .p5-mona { animation: none !important; }
+}
+
+/* ============================================================
+   Mona v5 — sprite state machine + Ren's phone chat
+   ============================================================ */
+#mirasim-skin-fx .p5-mona {
+  position: absolute;
+  bottom: 0;
+  left: 40vw;
+  width: 96px;
+  height: 104px;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 6;
+  filter: drop-shadow(2px 3px 0 #000b);
+}
+#mirasim-skin-fx .p5-mona img.mona-f {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: auto;
+  display: none;
+  pointer-events: none;
+  image-rendering: auto;
+}
+#mirasim-skin-fx .p5-mona.st-sit  img.mona-s { display: block; height: 84%; }
+#mirasim-skin-fx .p5-mona.st-walk img.mona-w { display: block; height: 88%; animation: p5-mona-trot .3s ease-in-out infinite alternate; }
+#mirasim-skin-fx .p5-mona.st-jump img.mona-j { display: block; height: 100%; animation: p5-mona-hop .6s ease-out; }
+#mirasim-skin-fx .p5-mona.st-sleep img.mona-z { display: block; height: 66%; }
+#mirasim-skin-fx .p5-mona.flip img.mona-f { transform: scaleX(-1); }
+@keyframes p5-mona-trot { from { translate: -50% 0; rotate: -2deg; } to { translate: -50% -3px; rotate: 2deg; } }
+@keyframes p5-mona-hop  { 0% { translate: -50% 0; } 45% { translate: -50% -30px; } 100% { translate: -50% 0; } }
+
+/* vector fallback keeps the old drawn cat if sprites 404 */
+#mirasim-skin-fx .p5-mona.mona-vector img.mona-f { display: none !important; }
+#mirasim-skin-fx .p5-mona .mona-vec {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 60%, #14121a 60%, transparent 62%);
+}
+#mirasim-skin-fx .p5-mona .mona-vec::before {
+  content: "🐱"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 40px;
+}
+
+/* speech bubble — ransom-note card */
+#mirasim-skin-fx .p5-mona-say {
+  position: absolute;
+  bottom: 96%;
+  left: 50%;
+  translate: -46% 6px;
+  min-width: 96px;
+  max-width: 240px;
+  width: max-content;
+  padding: 7px 11px;
+  background: var(--p5-white, #fbf7f4);
+  color: #0a0508;
+  font: 700 12px/1.5 -apple-system, "PingFang SC", sans-serif;
+  transform: skewX(-4deg) rotate(-2deg);
+  box-shadow: 3px 3px 0 var(--p5-red, #ec0a2e), 5px 5px 0 #000c;
+  opacity: 0;
+  transition: opacity .16s ease, translate .16s ease;
+  pointer-events: none;
+  white-space: normal;
+}
+#mirasim-skin-fx .p5-mona-say.on { opacity: 1; translate: -46% 0; }
+#mirasim-skin-fx .p5-mona-say::after {
+  content: ""; position: absolute; bottom: -7px; left: 40%;
+  border: 7px solid transparent; border-top-color: var(--p5-white, #fbf7f4); border-bottom: 0;
+}
+
+/* ---- the phone chat panel ----------------------------------- */
+#mirasim-skin-fx .p5-phone-chat {
+  position: absolute;
+  right: 18px;
+  bottom: 108px;
+  width: 300px;
+  max-height: 62vh;
+  display: flex;
+  flex-direction: column;
+  background: #0c0a0f;
+  border: 2px solid var(--p5-white, #fbf7f4);
+  box-shadow: 6px 6px 0 var(--p5-red, #ec0a2e), 10px 10px 0 #000c;
+  transform: skewX(-1.2deg) translateY(10px) scale(.98);
+  transform-origin: bottom right;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s cubic-bezier(.2,.9,.3,1.2);
+  z-index: 7;
+  overflow: hidden;
+}
+#mirasim-skin-fx .p5-phone-chat.on { opacity: 1; transform: skewX(-1.2deg) translateY(0) scale(1); pointer-events: auto; }
+#mirasim-skin-fx .pc-head {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 11px; background: var(--p5-red, #ec0a2e); color: #fff;
+  border-bottom: 2px solid #0a0508;
+}
+#mirasim-skin-fx .pc-mask {
+  width: 24px; height: 16px; flex: none;
+  background:
+    radial-gradient(circle at 30% 55%, #0a0508 0 3px, transparent 3.5px),
+    radial-gradient(circle at 70% 55%, #0a0508 0 3px, transparent 3.5px),
+    var(--p5-white, #fbf7f4);
+  clip-path: polygon(0 60%, 22% 10%, 50% 34%, 78% 10%, 100% 60%, 80% 74%, 50% 56%, 20% 74%);
+}
+#mirasim-skin-fx .pc-id { display: flex; flex-direction: column; line-height: 1.15; flex: 1; }
+#mirasim-skin-fx .pc-id b { font: 900 13px/1 "Arial Black", Impact, sans-serif; letter-spacing: .06em; }
+#mirasim-skin-fx .pc-id i { font-style: normal; font-size: 9.5px; opacity: .85; letter-spacing: .12em; }
+#mirasim-skin-fx .pc-x { background: none; border: 0; color: #fff; cursor: pointer; font-size: 14px; padding: 2px 4px; }
+#mirasim-skin-fx .pc-log {
+  flex: 1; overflow-y: auto; padding: 11px 10px; display: flex; flex-direction: column; gap: 8px;
+  background:
+    repeating-linear-gradient(-45deg, #ffffff05 0 2px, transparent 2px 9px),
+    #0c0a0f;
+}
+#mirasim-skin-fx .pc-row { display: flex; }
+#mirasim-skin-fx .pc-row.pc-me { justify-content: flex-end; }
+#mirasim-skin-fx .pc-msg {
+  max-width: 80%; padding: 7px 10px; font: 500 12.5px/1.5 -apple-system, "PingFang SC", sans-serif;
+}
+#mirasim-skin-fx .pc-mona .pc-msg {
+  background: var(--p5-white, #fbf7f4); color: #0a0508;
+  transform: skewX(-3deg); box-shadow: 2px 2px 0 #000a;
+}
+#mirasim-skin-fx .pc-me .pc-msg {
+  background: var(--p5-red, #ec0a2e); color: #fff;
+  transform: skewX(-3deg); box-shadow: 2px 2px 0 #000a;
+}
+#mirasim-skin-fx .pc-in {
+  display: flex; gap: 6px; padding: 8px; background: #0a0508; border-top: 2px solid var(--p5-white, #fbf7f4);
+}
+#mirasim-skin-fx .pc-in input {
+  flex: 1; background: #17141b; border: 1px solid #ffffff33; color: #fff;
+  padding: 7px 9px; font: 500 12.5px -apple-system, "PingFang SC", sans-serif; outline: none;
+}
+#mirasim-skin-fx .pc-in input:focus { border-color: var(--p5-red-hot, #ff2442); box-shadow: 0 0 0 2px #ec0a2e55; }
+#mirasim-skin-fx .pc-send {
+  flex: none; width: 34px; background: var(--p5-red, #ec0a2e); color: #fff;
+  border: 0; cursor: pointer; font-size: 13px; box-shadow: 2px 2px 0 #000a;
+}
+#mirasim-skin-fx .pc-send:active { transform: translate(1px,1px); box-shadow: 1px 1px 0 #000a; }
+
+html[data-anim-paused] #mirasim-skin-fx .p5-mona img.mona-f { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  #mirasim-skin-fx .p5-mona img.mona-f { animation: none !important; }
+}
+
+/* ============================================================
+   Mona v6 — drag, function menu, focus badge, micro-motion
+   ============================================================ */
+#mirasim-skin-fx .p5-mona.mona-grab { cursor: grabbing; filter: drop-shadow(4px 8px 0 #000b) brightness(1.06); }
+#mirasim-skin-fx .p5-mona.mona-grab img.mona-f { animation: p5-mona-dangle .5s ease-in-out infinite alternate !important; }
+@keyframes p5-mona-dangle { from { rotate: -7deg; } to { rotate: 7deg; } }
+#mirasim-skin-fx .p5-mona.mona-land img.mona-f { animation: p5-mona-squash .4s ease-out !important; }
+@keyframes p5-mona-squash { 0% { transform: scaleX(-1) scale(1.14,.82); } 60% { transform: scaleX(-1) scale(.94,1.08); } 100% { transform: scaleX(-1) scale(1); } }
+#mirasim-skin-fx .p5-mona:not(.flip).mona-land img.mona-f { animation: p5-mona-squash-r .4s ease-out !important; }
+@keyframes p5-mona-squash-r { 0% { transform: scale(1.14,.82); } 60% { transform: scale(.94,1.08); } 100% { transform: scale(1); } }
+#mirasim-skin-fx .p5-mona.mona-blink img.mona-f { animation: p5-mona-nod .26s ease-in-out !important; }
+@keyframes p5-mona-nod { 50% { transform: translateY(2px) scale(1,.94); } }
+
+/* focus countdown badge */
+#mirasim-skin-fx .p5-mona-badge {
+  position: absolute;
+  top: -14px;
+  right: -12px;
+  min-width: 40px;
+  padding: 2px 6px;
+  background: var(--p5-red, #ec0a2e);
+  color: #fff;
+  font: 900 12px/1.3 "Arial Black", Impact, monospace;
+  text-align: center;
+  transform: skewX(-8deg) rotate(-4deg);
+  box-shadow: 2px 2px 0 #000c, inset 0 0 0 1.5px #fff;
+  pointer-events: none;
+}
+
+/* the function menu — stacked ransom cards */
+#mirasim-skin-fx .p5-mona-menu {
+  position: absolute;
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px;
+  background: #0c0a0f;
+  border: 2px solid var(--p5-white, #fbf7f4);
+  box-shadow: 5px 5px 0 var(--p5-red, #ec0a2e), 8px 8px 0 #000c;
+  transform: skewX(-2deg) scale(.9);
+  transform-origin: bottom left;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .14s ease, transform .16s cubic-bezier(.2,.9,.3,1.3);
+  z-index: 8;
+}
+#mirasim-skin-fx .p5-mona-menu.on { opacity: 1; transform: skewX(-2deg) scale(1); pointer-events: auto; }
+#mirasim-skin-fx .mm-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 9px;
+  background: var(--p5-white, #fbf7f4);
+  color: #0a0508;
+  border: 0;
+  cursor: pointer;
+  font: 800 12.5px/1 -apple-system, "PingFang SC", sans-serif;
+  text-align: left;
+  transform: skewX(-3deg);
+  box-shadow: 2px 2px 0 #000a;
+  transition: transform .1s ease, background .1s ease;
+}
+#mirasim-skin-fx .mm-item:hover { background: var(--p5-red, #ec0a2e); color: #fff; transform: skewX(-3deg) translateX(3px); }
+#mirasim-skin-fx .mm-item:active { transform: skewX(-3deg) translate(1px,1px); box-shadow: 1px 1px 0 #000a; }
+#mirasim-skin-fx .mm-ic { font-size: 15px; filter: saturate(1.1); }
+
+/* ============================================================
+   v7 fixes — corners out of the chrome's way, luxe quota panel,
+   phone above everything and grabbable
+   ============================================================ */
+
+/* corners: decorative, never covering toolbar icons */
+#mirasim-skin-fx .p5-corner { width: 96px; height: 96px; filter: opacity(.6); }
+
+/* quota / usage popover: HP-bar treatment */
+html[data-skin="persona5"] [class*="rounded-full"][class*="bg-fg/10"] {
+  transform: skewX(-14deg);
+  border-radius: 0;
+  background: #000;
+  box-shadow: 0 0 0 1px #ffffff59, 2px 2px 0 #000c;
+  height: 7px;
+}
+html[data-skin="persona5"] [class*="rounded-full"][class*="bg-fg/10"] > * {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  transform-origin: left center;
+  animation: p5-meter-in .7s cubic-bezier(.2,.85,.3,1) both;
+  transition: width .5s cubic-bezier(.2,.85,.3,1);
+}
+@keyframes p5-meter-in { from { transform: scaleX(.001); } }
+html[data-skin="persona5"] [class*="rounded-full"][class*="bg-fg/10"] > *::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 9px, #0006 9px 10.5px),
+    linear-gradient(180deg, #ffffff3d, transparent 55%);
+}
+html[data-skin="persona5"] [class*="min-w-[200px]"] > * {
+  animation: p5-deal .4s cubic-bezier(.2,.8,.3,1.15) both;
+}
+html[data-skin="persona5"] [class*="min-w-[200px]"] > :nth-child(2) { animation-delay: .05s; }
+html[data-skin="persona5"] [class*="min-w-[200px]"] > :nth-child(3) { animation-delay: .1s; }
+html[data-skin="persona5"] [class*="min-w-[200px]"] > :nth-child(4) { animation-delay: .15s; }
+html[data-skin="persona5"] [class*="min-w-[200px]"] > :nth-child(5) { animation-delay: .2s; }
+html[data-skin="persona5"] [class*="min-w-[200px]"] > :nth-child(6) { animation-delay: .25s; }
+@keyframes p5-deal { from { opacity: 0; transform: translateX(-7px) skewX(-6deg); } }
+
+/* phone panel: clear of the date tag, grabbable, always on top */
+#mirasim-skin-fx .p5-phone-chat { bottom: 150px; z-index: 9; }
+#mirasim-skin-fx .pc-head { cursor: grab; touch-action: none; }
+#mirasim-skin-fx .pc-head:active { cursor: grabbing; }
+#mirasim-skin-fx .pc-x { padding: 4px 8px; font-size: 15px; }
+#mirasim-skin-fx .pc-msg[data-src="ai"]::after {
+  content: "◆";
+  margin-left: 5px;
+  font-size: 8px;
+  color: var(--p5-red-hot, #ff2442);
+  vertical-align: middle;
+}
+
+/* ============================================================
+   v8 — settings drawer, gear, drag affordance
+   ============================================================ */
+#mirasim-skin-fx .pc-head { cursor: grab; user-select: none; }
+#mirasim-skin-fx .pc-head:active { cursor: grabbing; }
+#mirasim-skin-fx .pc-id i { letter-spacing: .08em; }
+#mirasim-skin-fx .pc-g {
+  background: none; border: 0; color: #fff; cursor: pointer;
+  font-size: 14px; padding: 4px 6px; opacity: .9;
+}
+#mirasim-skin-fx .pc-g:hover { transform: rotate(40deg); }
+
+#mirasim-skin-fx .p5-phone-chat { position: absolute; }
+#mirasim-skin-fx .pc-set {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 46px;
+  background: #0c0a0f;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform: translateY(-8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .16s ease, transform .16s ease;
+  z-index: 2;
+  overflow-y: auto;
+}
+#mirasim-skin-fx .set-on .pc-set { opacity: 1; transform: none; pointer-events: auto; }
+#mirasim-skin-fx .ps-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: #17141b; padding: 9px 11px;
+  border-left: 3px solid var(--p5-red, #ec0a2e);
+  font: 700 12.5px/1.35 -apple-system, "PingFang SC", sans-serif; color: #fff;
+  transform: skewX(-2deg);
+}
+#mirasim-skin-fx .ps-row span { display: flex; flex-direction: column; gap: 2px; }
+#mirasim-skin-fx .ps-row span i { font-style: normal; font-size: 10px; color: #b7a9b3; font-weight: 500; }
+#mirasim-skin-fx .ps-row input[type="checkbox"] {
+  appearance: none; width: 36px; height: 20px; flex: none;
+  background: #2a2430; cursor: pointer; position: relative;
+  box-shadow: inset 0 0 0 1px #ffffff30; transition: background .15s;
+}
+#mirasim-skin-fx .ps-row input[type="checkbox"]::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px;
+  background: #fbf7f4; transition: left .15s;
+}
+#mirasim-skin-fx .ps-row input[type="checkbox"]:checked { background: var(--p5-red, #ec0a2e); }
+#mirasim-skin-fx .ps-row input[type="checkbox"]:checked::after { left: 19px; }
+#mirasim-skin-fx .ps-row select {
+  background: #2a2430; color: #fff; border: 1px solid #ffffff33;
+  font: 600 12px -apple-system, "PingFang SC", sans-serif; padding: 5px 7px; outline: none;
+}
+#mirasim-skin-fx .ps-clear {
+  background: var(--p5-white, #fbf7f4); color: #0a0508; border: 0; cursor: pointer;
+  font: 800 12.5px -apple-system, "PingFang SC", sans-serif; padding: 9px;
+  transform: skewX(-2deg); box-shadow: 2px 2px 0 var(--p5-red, #ec0a2e), 4px 4px 0 #000c;
+}
+#mirasim-skin-fx .ps-clear:hover { background: var(--p5-red, #ec0a2e); color: #fff; }
+#mirasim-skin-fx .ps-note { font: 500 10.5px/1.6 -apple-system, "PingFang SC", sans-serif; color: #9d8f99; }
+
+/* ============================================================
+   v9 — bolder chrome, readable code, P5 cloud panel, date tag
+   out of the composer's way
+   ============================================================ */
+
+/* date tag: lift it off the send/stop button (also draggable now) */
+#mirasim-skin-fx .p5-stack { bottom: 74px !important; right: 14px !important; }
+
+/* --- code / terminal readability (the white "Activity" board) --- */
+html[data-skin="persona5"] pre,
+html[data-skin="persona5"] pre code,
+html[data-skin="persona5"] code[class*="hljs"],
+html[data-skin="persona5"] [class*="hljs"],
+html[data-skin="persona5"] [class*="font-mono"][class*="bg-"] {
+  background: #0a060a !important;
+  color: #f4ecec !important;
+  border-left: 2px solid var(--p5-red, #ec0a2e);
+}
+/* light tool/activity cards → dark P5 card (skip image thumbnails) */
+html[data-skin="persona5"] div[class~="bg-white"]:not([class*="rounded-sm"]):not([class*="p-1"]):not([class*="p-2"]):not([class*="h-40"]):not([class*="w-40"]):not([class*="h-full"]) {
+  background: #140b0f !important;
+  color: var(--th-fg-2) !important;
+  box-shadow: inset 3px 0 0 var(--p5-red, #ec0a2e);
+}
+
+/* --- sidebar section headers → red ransom tab ------------------- */
+html[data-skin="persona5"] [class*="tracking-[0.14em]"] {
+  display: inline-block;
+  background: var(--p5-red, #ec0a2e);
+  color: #fff !important;
+  padding: 2px 12px 2px 9px;
+  margin: 2px 0;
+  font-weight: 900 !important;
+  transform: skewX(-9deg);
+  box-shadow: 2px 2px 0 #000c;
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+}
+
+/* --- the rail / toolbar icons get a hard frame on hover --------- */
+html[data-skin="persona5"] header button:hover svg,
+html[data-skin="persona5"] header a:hover svg { transform: scale(1.12); }
+html[data-skin="persona5"] header { border-bottom: 3px solid var(--p5-red, #ec0a2e); }
+html[data-skin="persona5"] header::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 3px;
+  background: repeating-linear-gradient(90deg, #fff 0 10px, transparent 10px 20px);
+  opacity: .25; pointer-events: none;
+}
+
+/* --- workspace/session rows: number badge + harder select ------- */
+html[data-skin="persona5"] .bg-layer-selected {
+  box-shadow: inset 4px 0 0 var(--p5-red, #ec0a2e), 3px 3px 0 #000a !important;
+  background-image: linear-gradient(90deg, #ec0a2e42, #ec0a2e14 55%, transparent) !important;
+}
+
+/* --- fill the emptied main area: a big faded phantom watermark --- */
+html[data-skin="persona5"] #mirasim-skin-fx-persona5 .p5-emblem { opacity: .09 !important; }
+
+/* --- cloud usage popover → full P5 briefing card ---------------- */
+html[data-skin="persona5"] [class*="min-w-[200px]"] {
+  position: relative;
+}
+html[data-skin="persona5"] [class*="min-w-[200px]"] > :first-child {
+  font-weight: 900 !important;
+  letter-spacing: .1em;
+  color: var(--p5-red-hot, #ff2442) !important;
+}
+html[data-skin="persona5"] [class*="min-w-[200px]"] [class*="text-fg-2"],
+html[data-skin="persona5"] [class*="min-w-[200px]"] [class*="tabular-nums"] {
+  font-weight: 900 !important;
+}
+
+/* v9b — phantom watermark + bolder rows */
+#mirasim-skin-fx .p5-ghost {
+  position: absolute;
+  left: 46%; top: 50%;
+  translate: -50% -50%;
+  font: 900 200px/1 "Arial Black", Impact, sans-serif;
+  letter-spacing: .06em;
+  color: transparent;
+  -webkit-text-stroke: 2px #ff244214;
+  transform: skewX(-8deg) rotate(-4deg);
+  pointer-events: none;
+  z-index: 0;
+  white-space: nowrap;
+}
+/* every session/menu row: persistent red tick, harder hover */
+html[data-skin="persona5"] [class*="hover:bg-layer-hover"] {
+  box-shadow: inset 2px 0 0 #ffffff1f;
+}
+html[data-skin="persona5"] [class*="hover:bg-layer-hover"]:hover {
+  transform: translateX(3px) skewX(-2deg) !important;
+  box-shadow: inset 3px 0 0 var(--p5-red, #ec0a2e), 3px 3px 0 #0007 !important;
+}
+
+/* ============================================================
+   v10 — corners off the top chrome, clear button, and the
+   cloud usage popover reworked into a P5 codex card
+   ============================================================ */
+
+/* the two TOP corners were overlapping the toolbar / account icons.
+   keep only the bottom shards. */
+#mirasim-skin-fx .p5-tl, #mirasim-skin-fx .p5-tr { display: none !important; }
+#mirasim-skin-fx .p5-bl, #mirasim-skin-fx .p5-br { width: 84px; height: 84px; opacity: .5; }
+
+/* phone: clear (🗑) button */
+#mirasim-skin-fx .pc-c {
+  background: none; border: 0; color: #fff; cursor: pointer;
+  font-size: 13px; padding: 4px 5px; opacity: .85;
+}
+#mirasim-skin-fx .pc-c:hover { opacity: 1; transform: scale(1.12); }
+
+/* ---- cloud usage popover → PHANTOM BRIEFING card -------------- */
+html[data-skin="persona5"] [class*="min-w-[200px]"] {
+  position: relative;
+  padding-top: 4px;
+}
+/* red header rule under the title */
+html[data-skin="persona5"] [class*="min-w-[200px]"] > :first-child {
+  font-weight: 900 !important;
+  letter-spacing: .16em;
+  color: #fff !important;
+  background: var(--p5-red, #ec0a2e);
+  padding: 3px 10px !important;
+  margin: -2px -4px 8px !important;
+  transform: skewX(-8deg);
+  box-shadow: 3px 3px 0 #000c;
+  display: inline-block;
+}
+/* each window row = an HP readout */
+html[data-skin="persona5"] [class*="min-w-[200px]"] > * {
+  animation: p5-deal .4s cubic-bezier(.2,.8,.3,1.15) both;
+}
+/* the label (5h/7d/30d) → bold mono tag */
+html[data-skin="persona5"] [class*="min-w-[200px]"] [class*="w-14"] {
+  font-weight: 900 !important;
+  color: var(--p5-yellow, #ffd23f) !important;
+  letter-spacing: .08em;
+}
+/* the track → skewed black HP bar with segment ticks */
+html[data-skin="persona5"] [class*="rounded-full"][class*="bg-fg/10"] {
+  transform: skewX(-16deg);
+  border-radius: 0 !important;
+  height: 9px !important;
+  background: #000 !important;
+  box-shadow: 0 0 0 1.5px var(--p5-white, #fbf7f4), 2px 2px 0 #000c;
+  overflow: hidden;
+}
+html[data-skin="persona5"] [class*="rounded-full"][class*="bg-fg/10"] > * {
+  position: relative;
+  border-radius: 0 !important;
+  background: linear-gradient(90deg, var(--p5-red-deep, #a30722), var(--p5-red, #ec0a2e) 60%, var(--p5-red-hot, #ff2442)) !important;
+  animation: p5-meter-in .6s cubic-bezier(.2,.85,.3,1) both;
+}
+html[data-skin="persona5"] [class*="rounded-full"][class*="bg-fg/10"] > *::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 8px, #0007 8px 9.5px);
+}
+@keyframes p5-meter-in { from { transform: scaleX(.001); } }
+/* the percentage number → big impact figure */
+html[data-skin="persona5"] [class*="min-w-[200px]"] [class*="tabular-nums"] {
+  font-family: "Arial Black", Impact, sans-serif !important;
+  font-weight: 900 !important;
+  color: #fff !important;
+  font-size: 15px !important;
+}
+/* reset countdown → dim mono, right-aligned */
+html[data-skin="persona5"] [class*="min-w-[200px]"] [class*="pl-2"] {
+  color: #b7929a !important;
+  font-size: 10px !important;
+}
+
+/* ============================================================
+   v11 — FLASHY P5 CHROME (all vector, pointer-events safe)
+   ============================================================ */
+
+/* comic halftone dots washed across every card + pane */
+html[data-skin="persona5"] .bg-panel,
+html[data-skin="persona5"] [data-pane-project] {
+  position: relative;
+}
+html[data-skin="persona5"] [data-pane-project]::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(#ffffff10 1px, transparent 1.4px);
+  background-size: 7px 7px;
+  mix-blend-mode: screen;
+  opacity: .5;
+}
+
+/* angled red/white corner BRACKETS on every session pane */
+html[data-skin="persona5"] [data-pane-project]::before {
+  content: "";
+  position: absolute; top: 6px; left: 6px; width: 46px; height: 46px; z-index: 2;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 46'%3E%3Cpath d='M0 0 H44 L36 7 H9 V34 L0 42 Z' fill='%23ec0a2e'/%3E%3Cpath d='M6 6 H30 M6 6 V30' stroke='%23fbf7f4' stroke-width='2' fill='none'/%3E%3Cpath d='M14 3 l3 6 l6 0 l-5 4 l2 6 l-6 -4 l-6 4 l2 -6 l-5 -4 l6 0 Z' fill='%23fbf7f4' transform='translate(20 18) scale(.5)'/%3E%3C/svg%3E") no-repeat;
+}
+
+/* the sidebar header (Mirasim vX.X.X) → red command banner */
+html[data-skin="persona5"] .bg-\[var\(--th-sidebar\)\] {
+  position: relative;
+  border-bottom: 3px solid var(--p5-red, #ec0a2e) !important;
+  box-shadow: 0 3px 0 #000a, 0 10px 20px -14px #000 !important;
+}
+html[data-skin="persona5"] .bg-\[var\(--th-sidebar\)\]::before {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: -3px; height: 3px; pointer-events: none;
+  background: repeating-linear-gradient(90deg, #fbf7f4 0 8px, transparent 8px 16px);
+  opacity: .4;
+}
+html[data-skin="persona5"] .bg-\[var\(--th-sidebar\)\]::after {
+  content: "";
+  position: absolute; right: 8px; top: 50%; translate: 0 -50%; width: 26px; height: 20px;
+  pointer-events: none; opacity: .9;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 76'%3E%3Cpath d='M6 40 C4 26 22 20 34 26 C40 18 60 18 66 26 C78 20 96 26 94 40 C90 34 74 34 68 44 C64 41 36 41 32 44 C26 34 10 34 6 40 Z' fill='%23fbf7f4' stroke='%230a0508' stroke-width='3'/%3E%3Cpath d='M18 34 C24 26 40 28 42 36 C36 42 22 42 18 34 Z' fill='%230a0508'/%3E%3Cpath d='M58 36 C60 28 76 26 82 34 C78 42 62 42 58 36 Z' fill='%230a0508'/%3E%3C/svg%3E") no-repeat center/contain;
+}
+
+/* composer → framed red-white blade box with a corner star */
+html[data-skin="persona5"] [data-composer="root"] {
+  box-shadow: inset 0 0 0 1.5px #fbf7f433, 4px 4px 0 #0007 !important;
+}
+html[data-skin="persona5"] [data-composer="root"]::after {
+  content: "";
+  position: absolute; top: -9px; right: 12px; width: 22px; height: 22px; z-index: 3;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M22 0 L28 15 L44 16 L31 26 L36 43 L22 33 L8 43 L13 26 L0 16 L16 15 Z' fill='%23ec0a2e' stroke='%23fbf7f4' stroke-width='2'/%3E%3C/svg%3E") no-repeat center/contain;
+  filter: drop-shadow(1px 2px 0 #000a);
+}
+
+/* selected session row → star bullet + heavier slab */
+html[data-skin="persona5"] .bg-layer-selected::after {
+  content: "★";
+  position: absolute; right: 8px; top: 50%; translate: 0 -50%;
+  color: var(--p5-yellow, #ffd23f); font-size: 11px;
+  text-shadow: 1px 1px 0 #000;
+  pointer-events: none;
+}
+
+/* section labels → hard yellow-on-red ransom tags */
+html[data-skin="persona5"] [class*="tracking-[0.16em]"],
+html[data-skin="persona5"] [class*="tracking-[0.14em]"] {
+  color: #fff !important;
+  background: var(--p5-red, #ec0a2e);
+  padding: 2px 10px 2px 8px !important;
+  transform: skewX(-9deg);
+  box-shadow: 2px 2px 0 #000c;
+  clip-path: polygon(0 0, 100% 0, 93% 100%, 0 100%);
+}
+
+/* a slow red scan-line sweeping the top nav */
+html[data-skin="persona5"] header { overflow: hidden; }
+html[data-skin="persona5"] header::before {
+  content: "";
+  position: absolute; top: 0; bottom: 0; width: 40%; left: -40%; z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, #ec0a2e18 50%, transparent);
+  animation: p5-scan 7s linear infinite;
+}
+@keyframes p5-scan { to { left: 140%; } }
+@media (prefers-reduced-motion: reduce) { html[data-skin="persona5"] header::before { animation: none; } }
+
+/* v12 — happy / shock sprite states */
+#mirasim-skin-fx .p5-mona.st-happy img.mona-h { display: block; height: 96%; animation: p5-mona-hop .68s ease-out; }
+#mirasim-skin-fx .p5-mona.st-shock img.mona-k { display: block; height: 92%; animation: p5-mona-shake .5s ease-in-out; }
+@keyframes p5-mona-shake { 0%,100% { translate: -50% 0; } 25% { translate: calc(-50% - 4px) 0; } 50% { translate: calc(-50% + 4px) 0; } 75% { translate: calc(-50% - 2px) 0; } }
+
+
+/* ==== standalone wallpaper mode ==== */
+html[data-skin="persona5"]::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:url(./mirasim-skin-wallpaper.png) right center/cover no-repeat;opacity:1}
+html[data-skin="persona5"] body{background:transparent}
+html[data-skin="persona5"]{--th-surface:#060406c7;--surface-0:#060406c7;--surface-1:#030203c7;--surface-2:#120b0ed4;--surface-3:#1c1216d4;--th-rail:#030203c7;--th-panel-alt:#150d10d4;--th-sidebar:#030203c7}
