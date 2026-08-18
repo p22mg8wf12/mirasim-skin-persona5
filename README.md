@@ -1,5 +1,7 @@
 # mirasim-skin-persona5
 
+**English** · [简体中文](README.zh-CN.md)
+
 A **怪盗 / Phantom-thief** skin for the Mirasim desktop app — Persona 5-Royal-
 inspired ink-black / calling-card-red / mask-white, with a living **Morgana desk
 companion** (Mona) that chats, reports on your sessions, and runs a focus timer.
@@ -45,7 +47,7 @@ tabs, and a calling-card intro when the skin engages.
 
 **Morgana (Mona)** — a sprite desk pet that:
 
-Everything below is **fully local — no network, no key, no extra process.**
+Everything below is **local by default — no network, no key, no extra process.**
 
 | Feature | How |
 |---|---|
@@ -57,11 +59,14 @@ Everything below is **fully local — no network, no key, no extra process.**
 | **Draggable** | Drag Mona (and her phone) anywhere; positions persist. |
 | **Moods** | Walks, blinks, naps when idle, jumps on click. |
 
-> Free-form large-language-model chat is **not** included: the Mirasim desktop
-> window's CSP only lets the page talk to `127.0.0.1`, and Mirasim's own model
-> proxy is per-session and dynamic-port, so it can't be reached reliably. A tiny
-> user-run local bridge can add real LLM chat, but it's intentionally left out of
-> this package to keep it zero-dependency and offline.
+> **Optional free-form LLM chat (off by default):** the settings toggle talks
+> only to `http://127.0.0.1:51789` — a local bridge **you** run. This package
+> ships no such process and never starts one, and with the toggle off the
+> request is never made. Loopback is the only option available: the Mirasim
+> desktop window's CSP only lets the page talk to `127.0.0.1`, and Mirasim's own
+> model proxy is per-session and dynamic-port, so it can't be reached reliably.
+> The bridge itself is intentionally left out to keep this zero-dependency and
+> offline.
 
 ### Hotkeys
 
@@ -79,9 +84,11 @@ with your remaining quota, in-universe.
 
 ## Privacy
 
-Mona is **100% local**: chat, todos, persona, and positions all live in your
-browser's `localStorage`, never written to any file in this repo. She makes **no
-network calls** — no external API, no key, no background process. Nothing here
+Mona is **100% local by default**: chat, todos, persona, and positions all live
+in your browser's `localStorage`, never written to any file in this repo. Out of
+the box she makes **no network calls** — no external API, no key, no background
+process. The one exception is the off-by-default LLM toggle above, which reaches
+only `127.0.0.1`, so data never leaves your machine either way. Nothing here
 contains any key, token, account, or path.
 
 ## Layout
